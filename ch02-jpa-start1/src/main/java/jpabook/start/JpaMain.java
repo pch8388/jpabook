@@ -44,6 +44,13 @@ public class JpaMain {
         //등록
         em.persist(member);
 
+        Member member1 = new Member();
+        member1.setId("id2");
+        member1.setUsername("두번째");
+        member1.setAge(30);
+
+        em.persist(member1);
+
         //수정
         member.setAge(20);
 
@@ -51,12 +58,14 @@ public class JpaMain {
         Member findMember = em.find(Member.class, id);
         System.out.println("findMember=" + findMember.getUsername() + ", age=" + findMember.getAge());
 
+        member.setUsername("테스트");
+        member1.setAge(22);
         //목록 조회
         List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList();
         System.out.println("members.size=" + members.size());
 
         //삭제
         em.remove(member);
-
+        em.remove(member1);
     }
 }
