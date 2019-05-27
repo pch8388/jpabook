@@ -1,9 +1,13 @@
 package jpabook.model;
 
+import jpabook.model.entity.Member;
+import jpabook.model.entity.Team;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 /**
  * Created by 1001218 on 15. 4. 5..
@@ -21,7 +25,13 @@ public class Main {
         try {
 
             tx.begin(); //트랜잭션 시작
-            //TODO 비즈니스 로직
+
+            testSave(em);
+
+            testFind(em);
+
+            queryLogicJoin(em);
+
             tx.commit();//트랜잭션 커밋
 
         } catch (Exception e) {
@@ -32,6 +42,39 @@ public class Main {
         }
 
         emf.close(); //엔티티 매니저 팩토리 종료
+    }
+
+    private static void queryLogicJoin(EntityManager em) {
+        String jpql = "select m from Member m join m.team t where t.name=:teamName";
+
+        List<Member> resultList = em.createQuery(jpql, Member.class)
+            .setParameter("teamName", "팀1")
+            .getResultList();
+
+        for (Member member : resultList) {
+            System.out.println("[query] member.username = " + member.getName());
+        }
+    }
+
+    private static void testFind(EntityManager em) {
+        Member member = em.find(Member.class, 1L);
+        Team team = member.getTeam();
+        System.out.println("team name = " + team.getName());
+    }
+
+    private static void testSave(EntityManager em) {
+
+        Team team1 = new Team("team1", "팀1");
+        em.persist(team1);
+
+        Member member1 = new Member("회원1");
+        member1.setTeam(team1);
+        em.persist(member1);
+
+        Member member2 = new Member("회원2");
+        member2.setTeam(team1);
+        em.persist(member2);
+
     }
 
 }

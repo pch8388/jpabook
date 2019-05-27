@@ -11,6 +11,12 @@ import java.util.List;
 @Entity
 public class Member {
 
+    public Member(){}
+
+    public Member(String name) {
+        this.name = name;
+    }
+
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
@@ -21,7 +27,19 @@ public class Member {
     private String street;
     private String zipcode;
 
+    @ManyToOne
+    @JoinColumn(name="TEAM_ID")
+    private Team team;
+
     //Getter, Setter
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 
     public Long getId() {
         return id;
