@@ -32,6 +32,12 @@ public class Main {
 
             queryLogicJoin(em);
 
+            updateRelation(em);
+
+            deleteRelation(em);
+
+            biDirection(em);
+
             tx.commit();//트랜잭션 커밋
 
         } catch (Exception e) {
@@ -42,6 +48,34 @@ public class Main {
         }
 
         emf.close(); //엔티티 매니저 팩토리 종료
+    }
+
+    private static void biDirection(EntityManager em) {
+        Team team = em.find(Team.class, "team1");
+        List<Member> members = team.getMembers();
+
+        for (Member member : members) {
+            System.out.println("member.username : " + member.getName());
+        }
+    }
+
+
+    private static void deleteRelation(EntityManager em) {
+        Member member1 = em.find(Member.class, 1L);
+        member1.setTeam(null);
+
+        System.out.println("delete = " + member1.getTeam());
+
+    }
+
+    private static void updateRelation(EntityManager em) {
+        Team team2 = new Team("team2", "팀2");
+        em.persist(team2);
+
+        Member member = em.find(Member.class, 1L);
+        member.setTeam(team2);
+
+        System.out.println("update Team is " + member.getTeam().getName());
     }
 
     private static void queryLogicJoin(EntityManager em) {
