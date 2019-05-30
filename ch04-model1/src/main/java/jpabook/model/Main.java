@@ -38,6 +38,8 @@ public class Main {
 
             biDirection(em);
 
+            testSaveNonOwner(em);
+
             tx.commit();//트랜잭션 커밋
 
         } catch (Exception e) {
@@ -50,8 +52,22 @@ public class Main {
         emf.close(); //엔티티 매니저 팩토리 종료
     }
 
+    private static void testSaveNonOwner(EntityManager em) {
+        Member member1 = new Member("회원3");
+        em.persist(member1);
+
+        Member member2 = new Member("회원4");
+        em.persist(member2);
+
+        Team team1 = new Team("team3", "팀3");
+        team1.getMembers().add(member1);
+        team1.getMembers().add(member2);
+        em.persist(team1);
+    }
+
     private static void biDirection(EntityManager em) {
         Team team = em.find(Team.class, "team1");
+
         List<Member> members = team.getMembers();
 
         for (Member member : members) {
