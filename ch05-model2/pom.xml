@@ -10,7 +10,7 @@
 	<properties>
 
 		<!-- 기본 설정 -->
-		<java.version>1.6</java.version>
+		<java.version>1.8</java.version>
 		<!-- 프로젝트 코드 인코딩 설정 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -36,7 +36,13 @@
 			<artifactId>h2</artifactId>
 			<version>${h2db.version}</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
